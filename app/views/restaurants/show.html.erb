@@ -1,21 +1,48 @@
 <div class="container">
-<p style="color: green"><%= notice %></p>
+  <p style="color: green"><%= notice %></p>
 
-<%= render @restaurant %>
-<p><strong>Reviews</strong></p>
-<ul class="list-group">
-  <% @restaurant.reviews.each do |review| %>
-    <li class="list-group-item">
-      <%= review.content %>
-      <%= "#{review.rating}/5" %>
-    </li>
-  <% end %>
-</ul>
-<br>
+  <%= render @restaurant %>
 
-<div>
-  <%# < %= link_to "Add a review", new_restaurant_review_path, class: 'btn btn-primary' % > %>
+  <div class="container">
+    <p><strong>Reviews</strong></p>
+    <% if @restaurant.reviews.empty? %>
+      <p>Be the first to review this restaurant!</p>
+    <% else %>
+    <ul class="list-group">
+      <% @restaurant.reviews.each do |review| %>
+        <li class="list-group-item">
+
+          <%= review.content %>
+
+
+          <% increment = 0 %>
+          <% 5.times do %>
+            <% if review.rating > increment %>
+              <i class="fa-solid fa-star"></i>
+            <% else %>
+              <i class="fa-regular fa-star"></i>
+            <% end %>
+            <% increment += 1 %>
+          <% end %>
+
+        </li>
+      <% end %>
+    </ul>
+    <% end %>
+    <br>
+  </div>
+
+  <div>
+    <div class="container">
+      <h1>New review</h1>
+      <%= simple_form_for [@restaurant, @review] do |f| %>
+        <%= f.input :content %>
+        <%= f.input :rating, collection: 0..5 %>
+        <%= f.submit "Submit review", class: "btn btn-primary" %>
+      <% end %>
+    </div>
+    <%# < %= link_to "Add a review", new_restaurant_review_path(@restaurant), class: 'btn btn-primary' % > %>
+  </div>
+  <br>
   <%= link_to "Back to restaurants", restaurants_path, class: 'btn btn-primary' %>
-
-</div>
 </div>

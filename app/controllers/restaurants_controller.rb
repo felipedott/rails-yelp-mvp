@@ -1,15 +1,14 @@
-# frozen_string_literal: true
-
 class RestaurantsController < ApplicationController
-  before_action :set_restaurant, only: %i[show edit update destroy]
-
   # GET /restaurants or /restaurants.json
   def index
     @restaurants = Restaurant.all
   end
 
   # GET /restaurants/1 or /restaurants/1.json
-  def show; end
+  def show
+    @restaurant = Restaurant.find(params[:id])
+    @review = Review.new
+  end
 
   # GET /restaurants/new
   def new
@@ -32,11 +31,6 @@ class RestaurantsController < ApplicationController
   end
 
   private
-
-  # Use callbacks to share common setup or constraints between actions.
-  def set_restaurant
-    @restaurant = Restaurant.find(params[:id])
-  end
 
   # Only allow a list of trusted parameters through.
   def restaurant_params
